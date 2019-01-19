@@ -10,9 +10,13 @@ class SpriteComponent extends ComponentInfo {
     }
   }
 
-  public static function load (s:Sprite, path:String, ?parent:h2d.Object) {
+  public static function load (s:Sprite, path:String) {
     var t:Tile = Res.load('bunny.png').toTile();
-    s.sprite = new Bitmap(t,parent);
+    s.sprite = new Bitmap(t,Theta.scene);
+  }
+
+  public static function setTile (s:Sprite, t:Tile) {
+    s.sprite = new Bitmap(t, Theta.scene);
   }
 }
 

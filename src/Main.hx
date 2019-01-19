@@ -1,22 +1,35 @@
+import h2d.Text;
+import hxd.Res;
+import h2d.Tile;
 using Sprite;
 
 class Main extends hxd.App {
   var p:Position;
-  override public function init () {
-    Theta.init();
+  var t:Tile;
+  var fps:Text;
 
-    for (i in 0...10) {
+  override public function init () {
+    Theta.init(s2d);
+    fps = new Text(hxd.res.DefaultFont.get());
+
+    s2d.addChildAt(fps, 10);
+    t = Res.load('bunny.png').toTile();
+  }
+
+
+  var i:Int = 0;
+  override public function update (dt:Float) {
+    Theta.update(dt);
+    fps.text = Std.int(1 / dt) + " fps (" + i + ")";
+    for (x in 0...10) {
       createBunny();
+      i++;
     }
   }
 
-  override public function update (dt:Float) {
-    Theta.update(dt);
-  }
-
   function createBunny():Void {
-    var e:Entity = new Entity([Position, Sprite]);
-    e.get(Sprite).load('bunny.png', s2d);
+    var e:Entity = new Entity([Physics, Sprite]);
+    e.get(Sprite).setTile(t);
   }
 
   static function main () {
