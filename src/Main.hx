@@ -1,22 +1,26 @@
+using Sprite;
+
 class Main extends hxd.App {
   var p:Position;
   override public function init () {
     Theta.init();
 
-    var time = Sys.time();
-
-    for (i in 0...1000) {
-      (new Entity()).add(Position);
-      Theta.update(1/60);
+    for (i in 0...10) {
+      createBunny();
     }
+  }
 
-    // var e:Entity = (new Entity()).add(Position);
-    // e.get(Position).x += 10;
+  override public function update (dt:Float) {
+    Theta.update(dt);
+  }
 
-    trace(Sys.time() - time);
+  function createBunny():Void {
+    var e:Entity = new Entity([Position, Sprite]);
+    e.get(Sprite).load('bunny.png', s2d);
   }
 
   static function main () {
+    hxd.Res.initEmbed();
     new Main();
   }
 }

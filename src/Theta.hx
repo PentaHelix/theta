@@ -11,7 +11,7 @@ class Theta {
     for(c in components) {
       var t:Class<Dynamic> = Type.resolveClass(c);
       var decl:ComponentDeclaration = Reflect.callMethod(t, Reflect.field(t, 'get'), []);
-      initComponent(decl.data, decl.update);
+      initComponent(decl.data, decl);
       componentNames.push(Type.getClassName(decl.data));
       i++;
     }
@@ -29,7 +29,7 @@ class Theta {
   }
 
   @:generic
-  public static function initComponent<T:{}>(t:Class<T>, update:Float->Dynamic->Void):Void {
-    components.set(Type.getClassName(t), new Component<T>(update));
+  public static function initComponent<T:{}>(t:Class<T>, decl:ComponentDeclaration):Void {
+    components.set(Type.getClassName(t), new Component<T>(decl));
   }
 }

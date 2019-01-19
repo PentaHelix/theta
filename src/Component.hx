@@ -1,24 +1,30 @@
-class Component<T:{}> {
-  public var data:Array<T> = [];
-  public var fUpdate:Float->Dynamic->Void;
+import ComponentDeclaration;
 
-  public function new (fUpdate:Float->Dynamic->Void) {
-    this.fUpdate = fUpdate;
+class Component<T:{}> {
+  public var entities:Array<Int> = []
+  public var data:Array<T> = [];
+  public var fAttach:ComponentAttach;
+  public var fUpdate:ComponentUpdate;
+
+  public function new (decl:ComponentDeclaration) {
+    this.fAttach = decl.attach;
+    this.fUpdate = decl.update;
   }
 
   public function update (dt:Float) {
-    for (d in data) {
-      this.fUpdate(dt, d);
+    if (fUpdate == null) return;
+    for (i in entities) {
+      this.fUpdate(dt, data[i], i);
     }
   }
-
-  public function remove () {}
 
   public function get (entity:Int):T {
     return data[entity];
   }
 
   public function init (entity:Int, with:T) {
+    entities.push(entity);
     data[entity] = with;
+    if (fAttach != null) fAttach(data[entity], entity);
   }
 }

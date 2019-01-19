@@ -4,9 +4,13 @@ class Entity {
   public var id:Int;
   public var hasComponents:Array<Class<Dynamic>> = [];
 
-  public function new () {
+  public function new (?components:Array<Class<Dynamic>>) {
     id = count;
     count++;
+    if (components == null) components = [];
+    for (c in components) {
+      add(c);
+    }
   }
 
   public function add(c:Class<Dynamic>):Entity {
