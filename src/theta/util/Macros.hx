@@ -1,3 +1,5 @@
+package theta.util;
+
 import haxe.io.Bytes;
 import haxe.macro.Context;
 import haxe.Resource;

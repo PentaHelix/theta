@@ -1,20 +1,27 @@
+package theta;
+
 import h2d.Scene;
 import haxe.Resource;
+import theta.components.Component;
+import theta.components.ComponentDeclaration;
+import theta.util.Debug;
+import theta.util.Profiler;
 
-class Theta {
+class Engine {
   public static var scene:Scene;
   public static var entities:Array<Int> = [];
   public static var components:haxe.DynamicAccess<Dynamic> = {};
   public static var componentNames:Array<String> = [];
 
   public static function init (s:Scene) {
-    Profiler.init(s);
-    
     scene = s;
+    Profiler.init();
+    Debug.init();
+    
     var components:Array<String> = Resource.getString('components').split(',').slice(0,-1);
     var i = 0;    
     for(c in components) {
-      var t:Class<Dynamic> = Type.resolveClass(c);
+      var t:Class<Dynamic> = Type.resolveClass('theta.components.'+c);
       var decl:ComponentDeclaration = Reflect.callMethod(t, Reflect.field(t, 'get'), []);
       initComponent(decl.data, decl);
       componentNames.push(Type.getClassName(decl.data));

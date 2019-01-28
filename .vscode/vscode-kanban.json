@@ -1,0 +1,29 @@
+{
+  "done": [],
+  "in-progress": [],
+  "testing": [],
+  "todo": [
+    {
+      "assignedTo": {
+        "name": "Jakob Kuen"
+      },
+      "creation_time": "2019-01-23T15:19:09.350Z",
+      "details": {
+        "content": "Allow components to register an array of `after` functions that run after specified components have executed their updates each frame. e.g ```function after (p:Physics, s:Sprite) {...}``` runs after the physics and sprite components.\n",
+        "mime": "text/markdown"
+      },
+      "id": "1",
+      "references": [],
+      "title": "Component `after` hook"
+    },
+    {
+      "assignedTo": {
+        "name": "Jakob Kuen"
+      },
+      "creation_time": "2019-01-23T15:20:16.854Z",
+      "id": "2",
+      "references": [],
+      "title": "Debug entity inspection"
+    }
+  ]
+}
