@@ -32,9 +32,9 @@ class Debug {
   }
 
   public static function inspect (e:Entity) {
-    for (c in e.hasComponents) {
-      makeComponentWindow(e, c);  
-    }
+    // for (c in e.hasComponents) {
+    //   makeComponentWindow(e, c);  
+    // }
   }
 
   public static function makeComponentWindow(e:Entity, c:Class<Dynamic>) {

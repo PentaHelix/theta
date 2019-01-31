@@ -7,7 +7,7 @@ import theta.Engine;
 
 
 @:allow(theta.components.SpriteComponent)
-class Sprite {
+class Sprite extends Component {
   public var sprite:h2d.Object;
   private var bitmap:h2d.Bitmap;
 }
