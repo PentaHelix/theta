@@ -3,12 +3,19 @@ package theta;
 #if !macro 
 import theta.components.Component;
 
+interface SystemBase {
+	public function start ():Void;
+	public function update ():Void;
+}
+
 @:genericBuild(theta.System.build())
 class System<Rest> {}
 #else
 
 import haxe.macro.Expr;
 import haxe.macro.Context;
+import haxe.Resource;
+import haxe.io.Bytes;
 import tink.macro.BuildCache;
 
 using tink.MacroApi;
@@ -17,7 +24,9 @@ using StringTools;
 using Lambda;
 
 class System {
+	public static var COUNT:Int = 0;
   public static function build () {
+	
 		var types:Array<haxe.macro.Type> = [];
 
     switch Context.getLocalType() {
@@ -38,30 +47,21 @@ class System {
       });
     }
 
-
 		return BuildCache.getTypeN('theta.System', types, ctx -> {
 			aspect.pack = ['theta', 'systems', ctx.name, 'View'];
 			Context.defineType(aspect);
 			buildClass(ctx.name, types);
-			});
+		});
   }
 
 	static function buildClass(name:String, types:Array<haxe.macro.Type>): haxe.macro.TypeDefinition {
 		var componentArgs:Array<FunctionArg> = [];
 		var i = 0;
-
-		for (t in types) {
-			componentArgs.push({
-				name: 'arg' + i,
-				type: t.toComplex(),
-			});
-			i++;
-		}
 		
-		var def = macro class $name {
+		var def = macro class $name implements theta.System.SystemBase {
 			private var entities:Array<Int>;
-			public function start () {}
-			public function update () {}
+			public function start () {};
+			public function update () {};
 		}
 
 		switch def.fields.find(f -> f.name == 'entities').kind {
@@ -73,19 +73,17 @@ class System {
 			default:
 		}
 
+		def.pack = ['theta', 'systems', name]; 
 
-		switch def.fields.find(f -> f.name == 'start').kind {
-			case FFun(f):
-				f.args = componentArgs;
-			default:
-		}
-
-		switch def.fields.find(f -> f.name == 'update').kind {
-			case FFun(f):
-				f.args = componentArgs;
-			default:
-		}
-		def.pack = ['theta', 'systems', name];
+		def.meta = [
+			{
+				name: ':autoBuild',
+				params: [
+					Context.parse('theta.util.Macro.buildSystem()', Context.currentPos())
+				],
+				pos: Context.currentPos()
+			}
+		];
 		return def;
 	}
 }

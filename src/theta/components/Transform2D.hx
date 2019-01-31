@@ -18,17 +18,18 @@ class Physics extends Component {
 }
 
 class PhysicsSystem extends System<Transform2D, Physics> {
-  override public function start(t:Transform2D, p:Physics) {
+  override public function start() {
     // entities[0].
   }
   
-  override public function update(t:Transform2D, p:Physics) {
-    trace('test');
+  override public function update() {
+    
   }
 }
 
 class TestSystem extends System<Sprite, Physics> {
-  override public function update (s:Sprite, p:Physics) {
+  override public function update () {
+    
   }
 }
 

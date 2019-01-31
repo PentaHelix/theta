@@ -30,7 +30,7 @@ class Testing extends hxd.App {
     // for (x in 0...10) {
     //   createBunny();
     // }
-    // Engine.update(dt);
+    Engine.update(dt);
   }
 
   function createBunny():Void {

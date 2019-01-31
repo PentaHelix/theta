@@ -10,6 +10,7 @@ import haxe.macro.Type;
 
 class Macro {
 	public static var COMPONENT_COUNT = 0;
+	public static var SYSTEM_COUNT = 0;
 	public static macro function initComponent ():Array<haxe.macro.Field> {
 		var c = Context.getLocalClass().get();		
 		var name = c.pack.join('.') + '.' + c.name;
@@ -34,6 +35,33 @@ class Macro {
 		COMPONENT_COUNT = idx.get(0) + 1;
 
 		Context.addResource('componentCount', idx);
+		return fields;
+	}
+
+	public static macro function buildSystem():Array<haxe.macro.Field> {
+		var c = Context.getLocalClass().get();		
+		var name = c.pack.join('.') + '.' + c.name;
+		var last = Resource.getString('systems');
+		if (last == null) last = '';
+		var string = last + ',' + name;
+		Context.addResource('systems', Bytes.ofString(string));
+
+		var fields = Context.getBuildFields();
+
+		var idx = Resource.getBytes('systemCount');
+		if (idx == null) idx = Bytes.alloc(1);
+
+		fields.push({
+			name: 'id',
+			access: [APublic, AStatic],
+			kind: FVar(macro : Int, macro $v{idx.get(0)}),
+			pos: Context.currentPos(),
+		});
+
+		idx.set(0, idx.get(0) + 1);
+		SYSTEM_COUNT = idx.get(0) + 1;
+
+		Context.addResource('systemCount', idx);
 		return fields;
 	}
 }
